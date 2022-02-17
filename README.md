@@ -1,2 +1,1 @@
-### NodeBird
-React로 SNS 만들기
+# React로 NodeBird SNS 만들기
