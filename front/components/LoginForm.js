@@ -1,7 +1,9 @@
 import { useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { Button, Form, Input } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
+import useInput from '../hooks/useInput';
 
 const BtnWrap = styled.div`
   margin-top: 10px;
@@ -11,50 +13,40 @@ const FormWrap = styled(Form)`
   padding: 10px;
 `
 
-// 'setIsLoggedIn' props에는 Layout.js의 setIsLoggedIn이 넘어온다.
 const LoginForm = ({ setIsLoggedIn }) => {
 
-  const [id, setId] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, onChangeEmail] = useInput('')
+  const [password, onChangePassword] = useInput('')
 
-  const onChangeId = useCallback((e) => {
-    setId(e.target.value)
-  }, []);
-
-  const onChangePassword = useCallback((e) => {
-    setPassword(e.target.value)
-  }, []);
-
-  // setIsLoggendIn을 true로 넘겨주면 Layout.js에서 만든 isLoggedIn state값이 true로 변경된다.
-  // 여기서 [id, password]는 id, password값이 바뀔때마다 onSubmitForm을 실행한다.
   const onSubmitForm = useCallback(() => {
-    console.log(id, password);
     setIsLoggedIn(true)
-  }, [id, password]);
+  }, [email, password])
 
   return (
     <FormWrap onFinish={onSubmitForm}>
       <div>
-        <label htmlFor="user-id">ID</label>
+        <label htmlFor="user-id"></label>
         <br />
         <Input 
-          name="user-id" 
+          name="user-email" 
           type="text" 
-          value={id} 
-          onChange={onChangeId} 
+          value={email} 
+          onChange={onChangeEmail} 
           autoComplete="on"
+          placeholder="Email"
           required 
         />
       </div>
       <div>
-        <label htmlFor="user-password">PASSWORD</label>
+        <label htmlFor="user-password"></label>
         <br />
         <Input 
           name="user-password" 
           type="password"
           value={password} 
-          onChange={onChangePassword} 
+          onChange={onChangePassword}
           autoComplete="on"
+          placeholder="Password"
           required 
         />
       </div>
@@ -64,6 +56,10 @@ const LoginForm = ({ setIsLoggedIn }) => {
       </BtnWrap>
     </FormWrap>
   )
+}
+
+LoginForm.propTypes = {
+  setIsLoggedIn: PropTypes.func.isRequired
 }
 
 export default LoginForm;

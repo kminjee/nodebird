@@ -12,8 +12,6 @@ const SearchInput = styled(Input.Search)`
 `
 
 const Layout = ({ children }) => {
-  console.log(children)
-  // LoginForm.js 에서 setIsLoggedIn을 true로 변경하면 아래 삼항연산자에서 true값일 때 넘어가는 UserProfile을 보여준다.
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   return (
