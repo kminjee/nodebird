@@ -52,53 +52,34 @@ const Signup = () => {
     <Layout>
       <Head>
         <meta charSet='utf-8' />
-        <title>SignUp | NodeBird</title>
+        <title>Signup | NodeBird</title>
       </Head>
       <Form onFinish={onSubmit}>
         <div>
           <labal htmlFor="user-email"></labal>
           <br />
-          <Input 
-            name="user-email" 
-            type="text" 
-            value={email} 
-            onChange={onChangeEmail} 
-            placeholder='Email'
-            required
-          />
+          <Input name="user-email" type="text" value={email} onChange={onChangeEmail} placeholder='Email' required />
         </div>
         <div>
           <labal htmlFor="user-nick"></labal>
           <br />
-          <Input 
-            name="user-nick" 
-            type="text" 
-            value={nickname} 
-            onChange={onChangeNickname} 
-            placeholder='Nick Name'
-            required 
-          />
+          <Input name="user-nick" type="text" value={nickname} onChange={onChangeNickname} placeholder='Nick Name' required />
+        </div>
+        <div>
+          <labal htmlFor="user-pw"></labal>
+          <br />
+          <Input name="user-pw" value={password} onChange={onChangePassword}placeholder="Password" autoComplete="on" required />
         </div>
         <div>
           <labal htmlFor="user-pw"></labal>
           <br />
           <Input 
-            name="user-pw" 
-            value={password} 
-            onChange={onChangePassword}
-            placeholder='Password'
-            required
-          />
-        </div>
-        <div>
-          <labal htmlFor="user-pw"></labal>
-          <br />
-          <Input 
-            name="user-pw-check"
-            type="password"
+            name="user-pw-check" 
+            type="password" 
             value={passwordCheck} 
-            onChange={onChangePasswordCheck}
-            placeholder='Confirm Password'
+            onChange={onChangePasswordCheck} 
+            placeholder="Confirm Password" 
+            autoComplete="on" 
             required 
           />
           {passwordError && <ErrorMessage>Passwords do not match</ErrorMessage>}

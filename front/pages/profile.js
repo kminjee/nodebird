@@ -17,6 +17,7 @@ const Profile = () => {
     { nickname: '김민아' }
   ]
 
+
   return (
     <>
       <Head>
