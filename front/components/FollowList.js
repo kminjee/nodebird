@@ -3,18 +3,18 @@ import { StopOutlined } from '@ant-design/icons';
 import PropTypes  from 'prop-types';
 import styled from 'styled-components';
 
+
 const StyledList = styled(List)`
   marginBottom: 20px;
 `
-
 const StyledDiv = styled.div`
   text-align: center;
   margin: 10px 0;
 `
-
 const StyledListItem = styled(List.Item)`
   marginTop: 20px;
 `
+
 
 const FollowList = ({ header, data }) => {
   return (
