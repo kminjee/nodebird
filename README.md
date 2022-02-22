@@ -7,6 +7,7 @@
 * Styled Components
 * Ant Design
 * Faker/Shortid
+* immer
 * axios
 
 ### 서비스기능
