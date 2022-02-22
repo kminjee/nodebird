@@ -33,16 +33,16 @@ const Layout = ({ children }) => {
       <Global />
       <Menu mode="horizontal">
         <Menu.Item key="itme-1">
-          <Link href="/"><a>HOME</a></Link>
+          <Link href="/"><a>메인</a></Link>
         </Menu.Item>
         <Menu.Item key="itme-2">
-          <Link href="/profile"><a>Profile</a></Link>
+          <Link href="/profile"><a>프로필</a></Link>
         </Menu.Item>
         <Menu.Item key="itme-3">
           <SearchInput />
         </Menu.Item>
         <Menu.Item key="itme-4">
-          <Link href="/signup"><a>SignUp</a></Link>
+          <Link href="/signup"><a>회원가입</a></Link>
         </Menu.Item>
       </Menu>
       <Row gutter={8}>

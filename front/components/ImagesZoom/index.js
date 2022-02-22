@@ -12,7 +12,7 @@ const ImagesZoom = ({ images, onClose }) => {
     <Overlay>
       <Global />
       <Header>
-        <h1>상세이미지</h1>
+        <h1>이미지 상세보기</h1>
         <CloseBtn onClick={onClose} />
       </Header>
       <SlickWrap>

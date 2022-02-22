@@ -26,11 +26,11 @@ function* signup() {
     // const result = yield call(signupAPI)
     yield delay(1000);
     yield put({
-      type: LOG_IN_SUCCESS,
+      type: SIGN_UP_SUCCESS,
     })
   } catch (err) {
     yield put({
-      type: LOG_IN_FAILURE,
+      type: SIGN_UP_FAILURE,
       error: err.response.data
     })
   }
@@ -41,12 +41,13 @@ function* login(action) {
     // const result = yield call(loginAPI, action.data)
     yield delay(1000);
     yield put({
-      type: SIGN_UP_SUCCESS,
+      type: LOG_IN_SUCCESS,
       data: action.data
     })
   } catch (err) {
+    console.log(err)
     yield put({
-      type: SIGN_UP_FAILURE,
+      type: LOG_IN_FAILURE,
       error: err.response.data
     })
   }

@@ -5,7 +5,7 @@ import { Button, Form, Input } from 'antd';
 import styled from 'styled-components';
 
 import useInput from '../hooks/useInput';
-import { loginRequestAction } from '../reducers/user';
+import { LOG_IN_REQUEST } from '../reducers/user';
 
 
 
@@ -26,8 +26,12 @@ const LoginForm = () => {
   const [password, onChangePassword] = useInput('')
 
   const onSubmitForm = useCallback(() => {
-    dispatch(loginRequestAction({ email, password }));
-  }, [email, password])
+    console.log(email, password);
+    dispatch({
+      type: LOG_IN_REQUEST,
+      data: { email, password },
+    });
+  }, [email, password]);
 
   return (
     <FormWrap onFinish={onSubmitForm}>

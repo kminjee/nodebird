@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { Form, Input, Button } from "antd";
 import useInput from "../hooks/useInput";
 import PropTypes from "prop-types";
@@ -20,6 +20,7 @@ const CommentForm = ({ post }) => {
     }
   }, [addCommentDone])
 
+  // 게시글은 props로, 내아이디는 리듀서에서, 댓글은 해당 컴포넌트의 state에서 가져옴
   const onSubmitComment = useCallback(() => {
     dispatch({
       type: ADD_COMMENT_REQUEST,
