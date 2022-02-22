@@ -6,6 +6,8 @@
 * Redux & Redux-saga
 * Styled Components
 * Ant Design
+* Faker/Shortid
+* axios
 
 ### 서비스기능
 * 회원가입
