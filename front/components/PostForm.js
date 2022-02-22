@@ -1,10 +1,11 @@
-import { useState, useRef, useCallback } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { addPost } from '../reducers/post'
 
 import { Form, Button, Input } from 'antd';
 import styled from 'styled-components';
+import useInput from '../hooks/useInput';
 
 
 const StyledForm = styled(Form)`
@@ -14,23 +15,24 @@ const StyledForm = styled(Form)`
 const PostForm = () => {
 
   const dispatch = useDispatch()
+
+  const { imagePaths, addPostDone } = useSelector((state) => state.post)
+  const [text, onChangeText, setText] = useInput('')
+
+  useEffect(() => {
+    if (addPostDone) {
+      setText('');
+    }
+  }, [addPostDone])
+
   const imageInput = useRef()
-
-  const { imagePaths } = useSelector((state) => state.post)
-  const [text, setText] = useState('')
-
-  const onChangeText = useCallback((e) => {
-    setText(e.target.value)
-  }, [])
-
   const onClickImageUpload = useCallback(() => {
     imageInput.current.click()
   }, [imageInput.current]) 
 
   const onSubmit = useCallback(() => {
-    dispatch(addPost)
-    setText('')
-  }, [])
+    dispatch(addPost(text))
+  }, [text])
 
   return (
     <StyledForm encType="multipart/form-data" onFinish={onSubmit}>
