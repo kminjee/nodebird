@@ -1,7 +1,5 @@
 # React NodeBird SNS
 
-### 개발환경
-
 ### 사용기술
 * React
 * Next.js
