@@ -3,47 +3,12 @@ import produce from "immer";
 import faker from "faker";
 
 export const initialState = {
-  mainPosts: [{
-    id: 1,
-    User: {
-      id: 1,
-      nickname: '또리'
-    },
-    content: '첫번째 게시글 #해시태그 #익스프레스',
-    Images: [
-      { 
-        id: shortId.generate(),
-        src: 'https://cdn4.iconfinder.com/data/icons/weatherful/72/Moon-256.png' 
-      },
-      { 
-        id: shortId.generate(),
-        src: 'https://cdn3.iconfinder.com/data/icons/flat-actions-icons-9/792/Star_Gold-256.png' 
-      },
-      { 
-        id: shortId.generate(),
-        src: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678087-heart-256.png' 
-      }
-    ],
-    Comments: [
-      { 
-        id: shortId.generate(),
-        User: { 
-          id: shortId.generate(), 
-          nickname: '망고' 
-        },
-        content: '예뻐요'
-      },
-      {
-        id: shortId.generate(),
-        User: { 
-          id: shortId.generate(),
-          nickname: '체리' 
-        },
-        content: '멋져요'
-      }
-    ]
-  }],
+  mainPosts: [],
   imagePaths: [],
+  hasMorePosts: true,
+  loadPostsLoading: false,
+  loadPostsDone: false,
+  loadPostsError: null,
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
@@ -55,28 +20,24 @@ export const initialState = {
   addCommentError: null,
 }
 
-initialState.mainPosts = initialState.mainPosts.concat(
-  Array(20).fill().map(() => ({
+export const generateDummyPost = (num) => Array(20).fill().map(() => ({
+  id: shortId.generate(),
+  User: {
     id: shortId.generate(),
-    User: {
-      id: shortId.generate(),
-      nickname: faker.name.findName()
-    },
-    content: faker.lorem.paragraph(),
-    Images: [
-      { src: faker.image.imageUrl() }
-    ],
-    Comments: [
-      { 
-        User: {
-          id: shortId.generate(),
-          nickname: faker.name.findName()
-        },
-        content: faker.lorem.sentence()
-      }
-    ]
-  }))
-)
+    nickname: faker.name.findName()
+  },
+  content: faker.lorem.paragraph(),
+  Images: [],
+  Comments: [
+    { 
+      User: {
+        id: shortId.generate(),
+        nickname: faker.name.findName()
+      },
+      content: faker.lorem.sentence()
+    }
+  ]
+}));
 
 const dummyPost = (data) => ({
   id: data.id,
@@ -98,6 +59,9 @@ const dummyComment = (data) => ({
   }
 })
 
+export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
+export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
+export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE';
 
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
@@ -125,6 +89,22 @@ export const addComment = (data) => ({
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
+    case LOAD_POSTS_REQUEST:
+      draft.loadPostsLoading = true
+      draft.loadPostsDone = false
+      draft.loadPostsError = null
+      break;
+    case LOAD_POSTS_SUCCESS:
+      draft.mainPosts = action.data.concat(draft.mainPosts)
+      draft.loadPostsLoading = false
+      draft.loadPostsDone = true
+      draft.hasMorePosts = draft.mainPosts.length < 50;
+      break;
+    case LOAD_POSTS_FAILURE:
+      draft.loadPostsLoading = false
+      draft.loadPostsError = action.error
+      break;
+
     case ADD_POST_REQUEST:
       draft.addPostLoading = true
       draft.addPostDone = false
@@ -139,6 +119,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.addPostLoading = false
       draft.addPostError = action.error
       break;
+
     case REMOVE_POST_REQUEST:
       draft.removePostLoading = true
       draft.removePostDone = false
@@ -153,6 +134,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.removePostLoading = false
       draft.removePostError = action.error
       break;
+
     case ADD_COMMENT_REQUEST:
       draft.addCommentLoading = true
       draft.addCommentDone = false
@@ -168,6 +150,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.addCommentLoading = false
       draft.addCommentError = action.error
       break;
+
     default: 
       break;
   }

@@ -1,18 +1,24 @@
 import produce from 'immer';
 
 export const initialState = {
-  loginLoding: false,   // 로그인 시도중
+  loginLoding: false,     // 로그인 시도중
   loginDone: false,
   loginError: null,
-  logoutLoding: false,  // 로그아웃 시도중
+  logoutLoding: false,    // 로그아웃 시도중
   logoutDone: false,
   logoutError: null,
-  signupLoding: false,  // 회원가입 시도중
+  signupLoding: false,    // 회원가입 시도중
   signupDone: false,
   signupError: null,
-  changeNicnameLoding: false,  // 닉네임 변경 시도중
-  changeNicnameDone: false,
-  changeNicnameError: null,
+  changeNicknameLoding: false,  // 닉네임 변경 시도중
+  changeNicknameDone: false,
+  changeNicknameError: null,
+  followLoding: false,    // 팔로우 시도중
+  followDone: false,
+  followError: null,
+  unfollowLoding: false,  // 언팔로우 시도중
+  unfollowDone: false,
+  unfollowError: null,
   me: null,
   signupData: {},
   loginData: {}
@@ -111,17 +117,17 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
 
     case SIGN_UP_REQUEST:
-      draft.singupLoding = true
-      draft.singupDone = false
-      draft.singupError = null
+      draft.signupLoding = true
+      draft.signupDone = false
+      draft.signupError = null
       break;
     case SIGN_UP_SUCCESS:
-      draft.singupLoding = false
-      draft.singupDone = true
+      draft.signupLoding = false
+      draft.signupDone = true
       break;
     case SIGN_UP_FAILURE:
-      draft.singupLoding = false
-      draft.singupError = action.error
+      draft.signupLoding = false
+      draft.signupError = action.error
       break;
 
     case CHANGE_NICKNAME_REQUEST:
@@ -137,12 +143,44 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.changeNicknameLoding = false
       draft.changeNicknameError = action.error
       break;
+
     case ADD_POST_TO_ME:
       draft.me.Posts.unshift({ id: action.data })
       break;
     case REMOVE_POST_OF_ME:
       draft.me.Posts = draft.me.Posts.filter((v) => v.id !== action.data)
       break;
+
+    case FOLLOW_REQUEST:
+      draft.followLoding = true
+      draft.followDone = false
+      draft.followError = null
+      break;
+    case FOLLOW_SUCCESS:
+      draft.followLoding = false
+      draft.me.Followings.push({ id: action.data })
+      draft.followDone = true
+      break;
+    case FOLLOW_FAILURE:
+      draft.followLoding = false
+      draft.followError = action.error
+      break;
+
+    case UNFOLLOW_REQUEST:
+      draft.unfollowLoding = true
+      draft.unfollowDone = false
+      draft.unfollowError = null
+      break;
+    case UNFOLLOW_SUCCESS:
+      draft.unfollowLoding = false
+      draft.me.Followings = draft.me.Followings.filter((v) => v.id !== action.data)
+      draft.unfollowDone = true
+      break;
+    case UNFOLLOW_FAILURE:
+      draft.unfollowLoding = false
+      draft.unfollowError = action.error
+      break;
+
     default:
       break;
   }
