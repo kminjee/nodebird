@@ -7,6 +7,7 @@
 * Styled Components
 * Ant Design
 * Faker/Shortid
+* immer
 * axios
 
 ### 서비스기능
@@ -18,3 +19,4 @@
 * 댓글
 * 좋아요
 * 이미지 업로드 / 이미지 상세보기
+* 인피니트 스크롤링
