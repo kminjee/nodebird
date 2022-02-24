@@ -56,4 +56,4 @@ Zerocho님의 강의를 보고 만든 프로젝트입니다.
 #### Immer를 사용해 쉽게 불변성 관리 하기
 불변성을 지키다보니 길어지고 가독성 떨어지는 코드를 immer를 통해 쉽게 관리하였다. 이전에는 ...state로 이전 상태값을 참조하여 불변성을 지키면서 새로운 상태로 만들어내야 했는데 immer는 알아서 불변성을 지켜주면서 다음 상태로 만들어준다. 
 
-<img src="https://user-images.githubusercontent.com/86812090/155526502-79f1e625-0266-4ad0-b4fb-5e9b1d2de054.jpg" width="500"/> <img src="https://user-images.githubusercontent.com/86812090/155525933-02f5899a-192e-4831-b076-9dacc91150ea.jpg" width="500"/>
+<img src="https://user-images.githubusercontent.com/86812090/155526502-79f1e625-0266-4ad0-b4fb-5e9b1d2de054.jpg" width="450"/> <img src="https://user-images.githubusercontent.com/86812090/155525933-02f5899a-192e-4831-b076-9dacc91150ea.jpg" width="450"/>
