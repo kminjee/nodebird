@@ -96,17 +96,17 @@ const Signup = () => {
         <div>
           <label htmlFor="user-email"></label>
           <br />
-          <Input name="user-email" type="text" value={email} onChange={onChangeEmail} placeholder="이메일" required />
+          <Input name="user-email" type="text" value={email} onChange={onChangeEmail} placeholder="이메일" autoComplete='off' required />
         </div>
         <div>
           <label htmlFor="user-nick"></label>
           <br />
-          <Input name="user-nick" type="text" value={nickname} onChange={onChangeNickname} placeholder="닉네임" required />
+          <Input name="user-nick" type="text" value={nickname} onChange={onChangeNickname} placeholder="닉네임" autoComplete='off' required />
         </div>
         <div>
           <label htmlFor="user-pw"></label>
           <br />
-          <Input name="user-pw" type="password" value={password} onChange={onChangePassword}placeholder="비밀번호" autoComplete="on" required />
+          <Input name="user-pw" type="password" value={password} onChange={onChangePassword}placeholder="비밀번호" autoComplete="off" required />
         </div>
         <div>
           <label htmlFor="user-pw"></label>
@@ -117,7 +117,7 @@ const Signup = () => {
             value={passwordCheck} 
             onChange={onChangePasswordCheck} 
             placeholder="비밀번호 확인" 
-            autoComplete="on" 
+            autoComplete="off" 
             required 
           />
           {passwordError && <ErrorMessage>비밀번호가 다릅니다.</ErrorMessage>}

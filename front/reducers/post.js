@@ -44,9 +44,13 @@ const dummyPost = (data) => ({
   content: data.content,
   User: {
     id: 1,
-    nickname: '짱구'
+    nickname: '또리'
   },
-  Images: [],
+  Images: [
+    { src: "https://images.unsplash.com/photo-1640622656891-04960a7aa678?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60" },
+    { src: 'https://images.unsplash.com/photo-1645690846939-fb89fe0797c6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60' },
+    { src: 'https://images.unsplash.com/photo-1645645082782-afc5a007f3e1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxOHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60' }
+  ],
   Comments: []
 })
 
@@ -55,7 +59,7 @@ const dummyComment = (data) => ({
   content: data,
   User: {
     id: 1,
-    nickname: '짱구'
+    nickname: '또리'
   }
 })
 
