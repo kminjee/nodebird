@@ -59,3 +59,10 @@ Zerocho님의 강의를 보고 만든 프로젝트입니다.
 불변성을 지키다보니 길어지고 가독성 떨어지는 코드를 immer를 통해 쉽게 관리하였다. 이전에는 ...state로 이전 상태값을 참조하여 불변성을 지키면서 새로운 상태로 만들어내야 했는데 immer는 알아서 불변성을 지켜주면서 다음 상태로 만들어준다. 
 
 <img src="https://user-images.githubusercontent.com/86812090/155526502-79f1e625-0266-4ad0-b4fb-5e9b1d2de054.jpg" width="450"/> <img src="https://user-images.githubusercontent.com/86812090/155525933-02f5899a-192e-4831-b076-9dacc91150ea.jpg" width="450"/>
+
+<br/>
+
+#### shortId와 faker로 데이터 생성하기
+더미데이터를 이용하면서 shortId로 새로운 id값을 생성할 수 있고, faker를 통해 랜덤으로 데이터를 만들어 낼 수 있다.
+
+<img src="https://user-images.githubusercontent.com/86812090/155551839-1809b3de-e41e-410d-acc9-2e2e3b7b83f1.jpg" width="450"/>
