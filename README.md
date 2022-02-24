@@ -9,6 +9,7 @@
 * Faker/Shortid
 * immer
 * axios
+* Node.js
 
 ### 서비스기능
 * 회원가입
