@@ -10,6 +10,7 @@ import { createGlobalStyle } from 'styled-components';
 const SearchInput = styled(Input.Search)`
   vertical-align: middle;
 `;
+
 const Global = createGlobalStyle`
   .ant-row {
     margin-right: 0 !important;
