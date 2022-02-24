@@ -1,5 +1,5 @@
 # React NodeBird SNS
-백엔드 구현중...
+Zerocho님의 강의를 보고 만든 프로젝트입니다.
 
 ## 사용기술
 * React
