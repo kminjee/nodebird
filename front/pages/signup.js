@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import Head from 'next/head';
 import styled from 'styled-components';
 import { Form, Input, Button, Checkbox } from 'antd';
+import Router from "next/router";
 
 import Layout from '../components/Layout';
 import useInput from '../hooks/useInput';
@@ -11,9 +12,35 @@ import { SIGN_UP_REQUEST } from '../reducers/user';
 const ErrorMessage = styled.div`
   color: red;
 `
+const StyledForm = styled(Form)`
+  margin-top: 60px;
 
-const StyledBtn = styled(Button)`
-  margin-top: 10px;
+  & h1 {
+    margin-top: 50px;
+    text-align: center;
+    color: #1890ff;
+  }
+
+  & div {
+    text-align: center;
+  }
+
+  .termbox {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 15px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  & div > input {
+    max-width: 500px;
+  }
+
+  & Button {
+    margin-top: 10px;
+  }
 `
 
 const Signup = () => {
@@ -55,6 +82,7 @@ const Signup = () => {
       type: SIGN_UP_REQUEST,
       data: { email, password, nickname }
     })
+    Router.push('/')
   }, [password, passwordCheck, term])
 
   return (
@@ -63,7 +91,8 @@ const Signup = () => {
         <meta charSet='utf-8' />
         <title>Signup | NodeBird</title>
       </Head>
-      <Form onFinish={onSubmit}>
+      <StyledForm onFinish={onSubmit}>
+        <h1>회원가입</h1>
         <div>
           <label htmlFor="user-email"></label>
           <br />
@@ -77,7 +106,7 @@ const Signup = () => {
         <div>
           <label htmlFor="user-pw"></label>
           <br />
-          <Input name="user-pw" value={password} onChange={onChangePassword}placeholder="비밀번호" autoComplete="on" required />
+          <Input name="user-pw" type="password" value={password} onChange={onChangePassword}placeholder="비밀번호" autoComplete="on" required />
         </div>
         <div>
           <label htmlFor="user-pw"></label>
@@ -93,12 +122,12 @@ const Signup = () => {
           />
           {passwordError && <ErrorMessage>비밀번호가 다릅니다.</ErrorMessage>}
         </div>
-        <div>
+        <div className="termbox">
           <Checkbox name="user-term" checked={term} onChange={onChangeTerm}>만 14세 이상입니다. (필수)</Checkbox>
           {termError && <ErrorMessage>이용 약관에 동의하세요.</ErrorMessage>}
+          <Button type="primary" htmlType="submit" loading={signupLoading}>회원가입</Button>
         </div>
-        <StyledBtn type="primary" htmlType="submit" loading={signupLoading}>Signup</StyledBtn>
-      </Form>
+      </StyledForm>
     </Layout>
   )
   

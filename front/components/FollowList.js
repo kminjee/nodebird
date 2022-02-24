@@ -6,6 +6,9 @@ import styled from 'styled-components';
 
 const StyledList = styled(List)`
   marginBottom: 20px;
+  width: 100%;
+  max-width: 686.5px;
+  margin: 0 auto;
 `
 const StyledDiv = styled.div`
   text-align: center;
