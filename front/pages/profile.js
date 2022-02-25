@@ -28,7 +28,7 @@ const Profile = () => {
   }, [me && me.id])
 
   if(!me) {
-    return null
+    return null;
   }
 
   return (

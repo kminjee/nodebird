@@ -1,13 +1,12 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Head from 'next/head';
 import styled from 'styled-components';
 import { Form, Input, Button, Checkbox } from 'antd';
-import Router from "next/router";
-
 import Layout from '../components/Layout';
 import useInput from '../hooks/useInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { SIGN_UP_REQUEST } from '../reducers/user';
+import Router from "next/router";
 
 const ErrorMessage = styled.div`
   color: red;
@@ -46,7 +45,19 @@ const StyledForm = styled(Form)`
 const Signup = () => {
 
   const dispatch = useDispatch()
-  const { signupLoading } = useSelector((state) => state.user)
+  const { signupLoading, signupDone, signupError } = useSelector((state) => state.user)
+
+  useEffect(() => {
+    if (signupDone) {
+      Router.push('/');
+    }
+  }, [signupDone])
+
+  useEffect(() => {
+    if (signupError) {
+      alert(signupError);
+    }
+  }, [signupError])
 
   const [email, onChangeEmail] = useInput('')
   const [nickname, onChangeNickname] = useInput('')
@@ -82,7 +93,6 @@ const Signup = () => {
       type: SIGN_UP_REQUEST,
       data: { email, password, nickname }
     })
-    Router.push('/')
   }, [password, passwordCheck, term])
 
   return (

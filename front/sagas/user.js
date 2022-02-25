@@ -1,4 +1,4 @@
-import { all, fork, takeLatest, put, delay } from "redux-saga/effects";
+import { all, fork, takeLatest, put, delay, call } from "redux-saga/effects";
 import axios from "axios";
 import { 
   LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, 
@@ -10,31 +10,14 @@ import {
 
 
 
-function signupAPI() {
-  return axios.post('/api/signup')
+function signupAPI(data) {
+  return axios.post('/user', data)
 }
 
-function loginAPI(data) {
-  return axios.post('/api/login', data)
-}
-
-function logoutAPI() {
-  return axios.post('/api/logout')
-}
-
-function followAPI() {
-  return axios.post('/api/follow')
-}
-
-function unfollowAPI() {
-  return axios.post('/api/unfollow')
-}
-
-
-function* signup() {
+function* signup(action) {
   try {
-    // const result = yield call(signupAPI)
-    yield delay(1000);
+    const result = yield call(signupAPI, action.data);
+    console.log(result)
     yield put({
       type: SIGN_UP_SUCCESS,
     })
@@ -46,13 +29,18 @@ function* signup() {
   }
 }
 
+
+function loginAPI(data) {
+  return axios.post('/user/login', data)
+}
+
 function* login(action) {
   try {
-    // const result = yield call(loginAPI, action.data)
-    yield delay(1000);
+    const result = yield call(loginAPI, action.data)
+    console.log(result);
     yield put({
       type: LOG_IN_SUCCESS,
-      data: action.data
+      data: result.data // 서버로부터 받아온 사용자의 정보를 담음.
     })
   } catch (err) {
     console.log(err)
@@ -61,6 +49,11 @@ function* login(action) {
       error: err.response.data
     })
   }
+}
+
+
+function logoutAPI() {
+  return axios.post('/user/logout')
 }
 
 function* logout() {
@@ -78,6 +71,12 @@ function* logout() {
   }
 }
 
+
+
+function followAPI() {
+  return axios.post('/user/follow')
+}
+
 function* follow(action) {
   try {
     // const result = yield call(followAPI)
@@ -92,6 +91,11 @@ function* follow(action) {
       error: err.response.data
     })
   }
+}
+
+
+function unfollowAPI() {
+  return axios.post('/user/unfollow')
 }
 
 function* unfollow(action) {
