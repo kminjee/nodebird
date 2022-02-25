@@ -1,7 +1,6 @@
 # React NodeBird SNS
 Zerocho님의 강의를 보고 만든 프로젝트입니다.
 <br/>
-2022.02.24 백엔드 구현 진행중...
 
 ## 사용기술
 * React
