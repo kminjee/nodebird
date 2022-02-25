@@ -6,8 +6,29 @@ import {
   SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE, 
   FOLLOW_REQUEST, FOLLOW_FAILURE, FOLLOW_SUCCESS, 
   UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS, UNFOLLOW_FAILURE, 
+  LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE, 
 } from "../reducers/user";
 
+
+function loadUserAPI(data) {
+  return axios.get('/user')
+}
+
+function* loadUser(action) {
+  try {
+    const result = yield call(loadUserAPI, action.data);
+    console.log(result)
+    yield put({
+      type: LOAD_USER_SUCCESS,
+      data: result.data
+    })
+  } catch (err) {
+    yield put({
+      type: LOAD_USER_FAILURE,
+      error: err.response.data
+    })
+  }
+}
 
 
 function signupAPI(data) {
@@ -58,8 +79,7 @@ function logoutAPI() {
 
 function* logout() {
   try {
-    // const result = yield call(logoutAPI)
-    yield delay(1000);
+    yield call(logoutAPI)
     yield put({
       type: LOG_OUT_SUCCESS,
     })
@@ -114,6 +134,11 @@ function* unfollow(action) {
   }
 }
 
+function* watchLoadUser() {
+  yield takeLatest(LOAD_USER_REQUEST, loadUser)
+}
+
+
 function* watchSignup() {
   yield takeLatest(SIGN_UP_REQUEST, signup)
 }
@@ -136,6 +161,7 @@ function* watchUnfollow() {
 
 export default function* userSaga() {
   yield all([
+    fork(watchLoadUser),
     fork(watchSignup),
     fork(watchLogin),
     fork(watchLogout),

@@ -1,11 +1,48 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const { User } = require('../models');
+
+const { User, Post } = require('../models');
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express.Router();
 
-router.post('/login', (req, res, next) => {
+
+router.get('/', async (req, res, next) => {
+  try {
+    if (req.user) {
+      const fullUserWithoutPassword = await User.findOne({
+        where: { id: req.user.id },
+        attributes: {
+          exclude: ['password'] // 전체 데이터 중에 비밀번호만 빼고 가져온다는 뜻
+        },  
+        include: [{
+          model: Post,
+          attributes: ['id'] // 전체 데이터들의 id값만 가져온다는 뜻
+        }, {
+          model: User,
+          as: 'Followings',
+          attributes: ['id']
+        }, {
+          model: User,
+          as: 'Followers',
+          attributes: ['id']
+        }]
+      });
+      res. status(200).json(fullUserWithoutPassword);
+    } else {
+      res.status(200).json(null);
+    }
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+
+})
+
+
+// isNotLoggedIn이 있으면 회원가입하지 않은 사람들만 이 경로로 가능
+router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {  // 서버 에러가 생기면 에러 메시지 리턴
       console.log(err);
@@ -19,13 +56,28 @@ router.post('/login', (req, res, next) => {
         console.log(err)
         return next(loginErr); 
       }
-      return res.json(user); // 정상적으로 로그인되면 프론트엔드로 json형태의 user정보를 전달
-    })
-  })(req, res, next)
+      const fullUserWithoutPassword = await User.findOne({
+        where: { id: user.id },
+        attributes: {
+          exclude: ['password'] // 전체 데이터 중에 비밀번호만 빼고 가져온다는 뜻
+        },  
+        include: [{
+          model: Post
+        }, {
+          model: User,
+          as: 'Followings',
+        }, {
+          model: User,
+          as: 'Followers'
+        }]
+      });
+      return res.status(200).json(fullUserWithoutPassword); // 정상적으로 로그인되면 프론트엔드로 json형태의 user정보를 전달
+    });
+  })(req, res, next);
 });
 
 
-router.post('/', async (req, res, next) => {
+router.post('/', isNotLoggedIn, async (req, res, next) => {
   try {
     const exUser = await User.findOne({
       where: {
@@ -46,7 +98,13 @@ router.post('/', async (req, res, next) => {
     console.log(err);
     next(err);  // status 500 
   }
-
 });
+
+// isLoggedIn 이 있으면 로그인 되어있는 사람만 가능
+router.post('/logout', isLoggedIn, (req, res) => {
+  req.logout();
+  req.session.destroy();
+  res.send('ok');
+})
 
 module.exports = router;

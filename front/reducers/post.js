@@ -39,30 +39,6 @@ export const generateDummyPost = (num) => Array(20).fill().map(() => ({
   ]
 }));
 
-const dummyPost = (data) => ({
-  id: data.id,
-  content: data.content,
-  User: {
-    id: 1,
-    nickname: '또리'
-  },
-  Images: [
-    { src: "https://images.unsplash.com/photo-1640622656891-04960a7aa678?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60" },
-    { src: 'https://images.unsplash.com/photo-1645690846939-fb89fe0797c6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60' },
-    { src: 'https://images.unsplash.com/photo-1645645082782-afc5a007f3e1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxOHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60' }
-  ],
-  Comments: []
-})
-
-const dummyComment = (data) => ({
-  id: shortId.generate(),
-  content: data,
-  User: {
-    id: 1,
-    nickname: '또리'
-  }
-})
-
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
 export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE';
@@ -115,7 +91,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.addPostError = null
       break;
     case ADD_POST_SUCCESS:
-      draft.mainPosts.unshift(dummyPost(action.data))
+      draft.mainPosts.unshift(action.data)
       draft.addPostLoading = false
       draft.addPostDone = true
       break;
@@ -145,8 +121,8 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.addCommentError = null
       break;
     case ADD_COMMENT_SUCCESS:
-      const post = draft.mainPosts.find((v) => v.id === action.data.postId)
-      post.Comments.unshift(dummyComment(action.data.content))
+      const post = draft.mainPosts.find((v) => v.id === action.data.PostId)
+      post.Comments.unshift(action.data)
       draft.addCommentLoading = false
       draft.addCommentDone = true
       break;

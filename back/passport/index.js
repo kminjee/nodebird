@@ -15,7 +15,6 @@ module.exports = () => {
       console.error(err);
       done(err);
     }
-  
   });
 
   local();

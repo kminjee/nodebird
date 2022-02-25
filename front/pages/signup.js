@@ -10,61 +10,38 @@ import Router from "next/router";
 
 const ErrorMessage = styled.div`
   color: red;
-`
-const StyledForm = styled(Form)`
-  margin-top: 60px;
+`;
 
-  & h1 {
-    margin-top: 50px;
-    text-align: center;
-    color: #1890ff;
-  }
-
-  & div {
-    text-align: center;
-  }
-
-  .termbox {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 15px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  & div > input {
-    max-width: 500px;
-  }
-
-  & Button {
-    margin-top: 10px;
-  }
+const StyledBtn = styled(Button)`
+  margin-top: 10px;
 `
 
 const Signup = () => {
-
   const dispatch = useDispatch()
-  const { signupLoading, signupDone, signupError } = useSelector((state) => state.user)
+  const { signupLoading, signupDone, signupError, me } = useSelector((state) => state.user)
+
+  useEffect(() => {    // 로그인 성공하면 me에 유저 정보가 담겨서 me에 데이터가 존재하면 메인페이지로 이동하게 하는것
+    if (me && me.id) {
+      Router.replace('/') // 푸쉬하면 뒤로가기하면 이전페이지로 가지고 replace는 기록에서 사라짐
+    }
+  }, [me && me.id])
 
   useEffect(() => {
     if (signupDone) {
-      Router.push('/');
+      Router.replace('/');
     }
-  }, [signupDone])
+  }, [signupDone]);
 
   useEffect(() => {
     if (signupError) {
       alert(signupError);
     }
-  }, [signupError])
+  }, [signupError]);
 
   const [email, onChangeEmail] = useInput('')
   const [nickname, onChangeNickname] = useInput('')
   const [password, onChangePassword] = useInput('')
 
-
-  // setPasswordError = password값과 비교해서 true/false를 passwordError state에 변경 
   const [passwordCheck, setPasswordCheck] = useState('')
   const [passwordError, setPasswordError] = useState(false)
   const onChangePasswordCheck = useCallback((e) => {
@@ -72,14 +49,12 @@ const Signup = () => {
     setPasswordError(e.target.value !== password)
   }, [password])
 
-
   const [term, setTerm] = useState('')
   const [termError, setTermError] = useState(false)
   const onChangeTerm = useCallback((e) => {
     setTerm(e.target.checked)
     setTermError(false)
   }, [])
-
 
   const onSubmit = useCallback(() => {
     if (password !== passwordCheck) {
@@ -93,30 +68,54 @@ const Signup = () => {
       type: SIGN_UP_REQUEST,
       data: { email, password, nickname }
     })
+    Router.push('/')
   }, [password, passwordCheck, term])
 
   return (
     <Layout>
       <Head>
         <meta charSet='utf-8' />
-        <title>Signup | NodeBird</title>
+        <title>회원가입 | NodeBird</title>
       </Head>
-      <StyledForm onFinish={onSubmit}>
-        <h1>회원가입</h1>
+      <Form onFinish={onSubmit}>
         <div>
           <label htmlFor="user-email"></label>
           <br />
-          <Input name="user-email" type="text" value={email} onChange={onChangeEmail} placeholder="이메일" autoComplete='off' required />
+          <Input 
+            name="user-email" 
+            type="text" 
+            value={email} 
+            onChange={onChangeEmail} 
+            placeholder="이메일"
+            autoComplete="off" 
+            required 
+          />
         </div>
         <div>
           <label htmlFor="user-nick"></label>
           <br />
-          <Input name="user-nick" type="text" value={nickname} onChange={onChangeNickname} placeholder="닉네임" autoComplete='off' required />
+          <Input 
+            name="user-nick" 
+            type="text" 
+            value={nickname} 
+            onChange={onChangeNickname} 
+            placeholder="닉네임" 
+            autoComplete="off"
+            required 
+          />
         </div>
         <div>
           <label htmlFor="user-pw"></label>
           <br />
-          <Input name="user-pw" type="password" value={password} onChange={onChangePassword}placeholder="비밀번호" autoComplete="off" required />
+          <Input 
+            name="user-pw" 
+            type="password" 
+            value={password} 
+            onChange={onChangePassword} 
+            placeholder="비밀번호" 
+            autoComplete="off" 
+            required 
+          />
         </div>
         <div>
           <label htmlFor="user-pw"></label>
@@ -127,20 +126,19 @@ const Signup = () => {
             value={passwordCheck} 
             onChange={onChangePasswordCheck} 
             placeholder="비밀번호 확인" 
-            autoComplete="off" 
+            autoComplete="off"
             required 
           />
-          {passwordError && <ErrorMessage>비밀번호가 다릅니다.</ErrorMessage>}
+          {passwordError && <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>}
         </div>
-        <div className="termbox">
+        <div>
           <Checkbox name="user-term" checked={term} onChange={onChangeTerm}>만 14세 이상입니다. (필수)</Checkbox>
           {termError && <ErrorMessage>이용 약관에 동의하세요.</ErrorMessage>}
-          <Button type="primary" htmlType="submit" loading={signupLoading}>회원가입</Button>
         </div>
-      </StyledForm>
+        <StyledBtn type="primary" htmlType="submit" loading={signupLoading}>가입하기</StyledBtn>
+      </Form>
     </Layout>
-  )
-  
-}
+  );
+};
 
 export default Signup;

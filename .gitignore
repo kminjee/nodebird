@@ -1,3 +1,6 @@
+# front module
 .next
 node_modules
+
+# KEY
 .env

@@ -19,9 +19,10 @@ db.sequelize.sync()
 passportConfig();
 
 app.use(cors({  // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3060')
-  origin: '*',
-  credentials: false
+  origin: true,
+  credentials: true
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));

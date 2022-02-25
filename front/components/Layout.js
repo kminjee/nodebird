@@ -1,9 +1,15 @@
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Row, Col } from 'antd';
-import styled, { createGlobalStyle } from 'styled-components';
-import GuestNav from './GuestNav';
-import UserNav from './UserNav';
+import Link from 'next/link';
+import { Menu, Input, Row, Col } from 'antd';
+import styled from 'styled-components';
+import LoginForm from './LoginForm';
+import UserProfile from './UserProfile';
+import { createGlobalStyle } from 'styled-components';
+
+const SearchInput = styled(Input.Search)`
+  vertical-align: middle;
+`;
 
 const Global = createGlobalStyle`
   .ant-row {
@@ -18,36 +24,43 @@ const Global = createGlobalStyle`
   }
 `;
 
-const StyledFeedBox = styled(Col)`
-  margin-top: 20px;
-`;
-
-
-
 const Layout = ({ children }) => {
   
-  const { me } = useSelector((state) => state.user)
+  const { me } = useSelector((state) => state.user);
 
   return (
     <div>
       <Global />
-      {me ? <UserNav /> : <GuestNav />}
+      <Menu mode="horizontal">
+        <Menu.Item key="itme-1">
+          <Link href="/"><a>메인</a></Link>
+        </Menu.Item>
+        <Menu.Item key="itme-2">
+          <Link href="/profile"><a>프로필</a></Link>
+        </Menu.Item>
+        <Menu.Item key="itme-3">
+          <SearchInput />
+        </Menu.Item>
+        <Menu.Item key="itme-4">
+          <Link href="/signup"><a>회원가입</a></Link>
+        </Menu.Item>
+      </Menu>
       <Row gutter={8}>
         <Col xs={24} md={6}>
+          {me ? <UserProfile /> : <LoginForm />}
         </Col>
-        <StyledFeedBox xs={24} md={12}>
+        <Col xs={24} md={12}>
           {children}
-        </StyledFeedBox>
+        </Col>
         <Col xs={24} md={6}>
         </Col>
       </Row>
     </div>
-  )
+  );
 };
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
 };
-
 
 export default Layout;
