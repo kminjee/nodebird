@@ -1,6 +1,5 @@
 const express = require('express');
 const { Post, Comment, Image, User } = require('../models');
-const comment = require('../models/comment');
 const { isLoggedIn } = require('./middlewares');
 
 const router = express.Router();
@@ -16,12 +15,17 @@ router.post('/', async (req, res, next) => {
       include: [{
         model: Image
       }, {
-        model: comment
+        model: Comment,
+        include: [{
+          model: User,
+          attributes: ['id', 'nickname']
+        }]
       }, {
-        model: User
+        model: User,
+        attributes: ['id', 'nickname']
       }]
     })
-    res.status(201).json(post); // 프론트로 돌려줌
+    res.status(201).json(fullPost); // 프론트로 돌려줌
   } catch (err) {
     console.error(err);
     next(err);
@@ -39,9 +43,17 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => { // 동�
 
     const comment = await Comment.create({
       content: req.body.content,
-      PostId: req.params.postId
+      PostId: parseInt(req.params.postId, 10),
+      UserId: req.user.id
     })
-    res.status(201).json(comment); // 프론트로 돌려줌
+    const fullComment = await Comment.findOne({
+      where: { id: comment.id },
+      include: [{
+        model: User,
+        attributes: ['id', 'nickname']
+      }]
+    })
+    res.status(201).json(fullComment); // 프론트로 돌려줌
   } catch (err) {
     console.error(err);
     next(err);

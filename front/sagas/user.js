@@ -10,14 +10,13 @@ import {
 } from "../reducers/user";
 
 
-function loadUserAPI(data) {
+function loadUserAPI() {
   return axios.get('/user')
 }
 
 function* loadUser(action) {
   try {
     const result = yield call(loadUserAPI, action.data);
-    console.log(result)
     yield put({
       type: LOAD_USER_SUCCESS,
       data: result.data
@@ -58,7 +57,6 @@ function loginAPI(data) {
 function* login(action) {
   try {
     const result = yield call(loginAPI, action.data)
-    console.log(result);
     yield put({
       type: LOG_IN_SUCCESS,
       data: result.data // 서버로부터 받아온 사용자의 정보를 담음.

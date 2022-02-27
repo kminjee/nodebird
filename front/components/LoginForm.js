@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Button, Form, Input } from 'antd';
 import styled from 'styled-components';
 import useInput from '../hooks/useInput';
-import { LOG_IN_REQUEST } from '../reducers/user';
+import { loginRequestAction } from '../reducers/user';
 
 const BtnWrap = styled.div`
   margin-top: 10px;
@@ -17,7 +17,7 @@ const FormWrap = styled(Form)`
 const LoginForm = () => {
 
   const dispatch = useDispatch();
-  const { loginLoading, loginDone, loginError } = useSelector((state) => state.user)
+  const { loginLoading, loginError } = useSelector((state) => state.user)
 
   const [email, onChangeEmail] = useInput('')
   const [password, onChangePassword] = useInput('')
@@ -31,10 +31,7 @@ const LoginForm = () => {
 
   const onSubmitForm = useCallback(() => {
     console.log(email, password);
-      dispatch({
-        type: LOG_IN_REQUEST,
-        data: { email, password }
-      })
+    dispatch(loginRequestAction({ email, password }))
     }, [email, password]);
 
   return (

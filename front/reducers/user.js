@@ -60,35 +60,15 @@ export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 
 
 
-const dummyUser = (data) => ({
-  ...data,
-  nickname: '또리',
-  id: 1,
-  Posts: [{ id: 1 }],
-  Followings: [
-    { nickname: '몽이' },
-    { nickname: '망고' },
-    { nickname: '별이' }
-  ],
-  Followers: [
-    { nickname: '몽이' },
-    { nickname: '망고' },
-    { nickname: '별이' }
-  ]
-})
 
-export const loginRequestAction = (data) => {
-  return {
+export const loginRequestAction = (data) => ({
     type: LOG_IN_REQUEST,
     data
-  }
-}
+});
 
-export const logoutRequestAction = () => {
-  return {
+export const logoutRequestAction = () => ({
     type: LOG_OUT_REQUEST
-  }
-}
+});
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {

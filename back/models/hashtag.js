@@ -1,3 +1,5 @@
+
+
 module.exports = (sequelize, DataTypes) => {
   const Hashtag = sequelize.define('Hashtag', {
     name: {

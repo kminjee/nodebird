@@ -1,3 +1,5 @@
+
+
 module.exports = (sequelize, DataTypes) => {
   const Comment = sequelize.define('Comment', {
     content: {
@@ -12,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   Comment.associate = (db) => {
     db.Comment.belongsTo(db.User);
-    db.Comment.belongsTo(db.Comment);
+    db.Comment.belongsTo(db.Post);
   };
   return Comment;
 }
