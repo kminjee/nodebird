@@ -8,10 +8,11 @@ Zerocho님의 강의를 보고 만든 프로젝트입니다.
 * Redux & Redux-saga
 * Styled Components
 * Ant Design
-* Faker/Shortid
+* Faker / Shortid
 * immer
 * axios
 * Node.js
+* Sequelize
 
 ## 서비스기능
 * 회원가입
@@ -25,11 +26,6 @@ Zerocho님의 강의를 보고 만든 프로젝트입니다.
 * 인피니트 스크롤링
 
 ## 미리보기
-
-#### 로그인 및 헤더 변경
-<img src="https://user-images.githubusercontent.com/86812090/155519663-fbac3895-6f45-440e-a478-1ec522b92d53.gif" width="600" height="600"/>
-
-<br/>
 
 #### 이미지 상세보기
 <img src="https://user-images.githubusercontent.com/86812090/155520920-aed49d1d-acb6-48b6-b460-5b5492ff6830.gif" width="600" height="600"/>
@@ -62,6 +58,6 @@ Zerocho님의 강의를 보고 만든 프로젝트입니다.
 <br/>
 
 #### shortId와 faker로 데이터 생성하기
-더미데이터를 이용하면서 shortId로 새로운 id값을 생성할 수 있고, faker를 통해 랜덤으로 데이터를 만들어 낼 수 있다.
+더미데이터에 shortId로 새로운 id값을 생성할 수 있고, faker를 통해 랜덤으로 데이터를 만들어 낼 수 있다.
 
 <img src="https://user-images.githubusercontent.com/86812090/155551839-1809b3de-e41e-410d-acc9-2e2e3b7b83f1.jpg" width="450"/>
