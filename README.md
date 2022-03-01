@@ -66,7 +66,7 @@ useInput을 호출함과 동시에 props로 초기값을 전달하고 setter에 
 
 <img src="https://user-images.githubusercontent.com/86812090/156198113-38ef6a7f-262b-4734-8df5-3a3266e9abba.jpg" width="400"/> <img src="https://user-images.githubusercontent.com/86812090/156198109-adf8e43e-d12a-40fc-a5c2-d334500e506b.jpg" width="400"/>
 
-
+<br/>
 
 ### Redux-saga 사용하기
 컴포넌트에서 REQUEST를 디스패치하면 사가에서는 REQUEST가 호출됨에 따라 API를 호출하는 제너레이터 함수를 실행시켜 데이터를 요청하고, 서버에서 넘겨주는 데이터를 완전히 리턴할 때까지 기다리는 call이펙트를 사용해 값을 받아오면 SUCCESS를 디스패치하는 방식입니다. 
@@ -106,7 +106,7 @@ useInput을 호출함과 동시에 props로 초기값을 전달하고 setter에 
 
 <br/>
 
-#### state의 불변성은 
+### state의 불변성
 
 <br/>
 
