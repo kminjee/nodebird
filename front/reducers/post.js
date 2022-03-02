@@ -25,7 +25,12 @@ export const initialState = {
   uploadImagesLoading: false,
   uploadImagesDone: false,
   uploadImagesError: null,
+  retweetLoading: false,
+  retweetDone: false,
+  retweetError: null,
 }
+
+
 
 export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
 export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
@@ -55,6 +60,10 @@ export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
 export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
 export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
 
+export const RETWEET_REQUEST = 'RETWEET_REQUEST';
+export const RETWEET_SUCCESS = 'RETWEET_SUCCESS';
+export const RETWEET_FAILURE = 'RETWEET_FAILURE';
+
 export const REMOVE_IMAGE = 'REMOVE_IMAGE'; // 동기액션은 하나만 만들어도 됨!
 
 
@@ -73,6 +82,22 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
     case REMOVE_IMAGE:
       draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data) // 제거를 누른 이미지만 제외하고 새로운 배열을 생성
+      break;
+
+    case RETWEET_REQUEST:
+      draft.retweetLoading = true
+      draft.retweetDone = false
+      draft.retweetError = null
+      break;
+    case RETWEET_SUCCESS: {
+      draft.retweetLoading = false
+      draft.retweetDone = true
+      draft.mainPosts.unshift(action.data)
+      break;
+    }
+    case RETWEET_FAILURE:
+      draft.retweetLoading = false
+      draft.retweetError = action.error
       break;
 
     case UPLOAD_IMAGES_REQUEST:
@@ -131,10 +156,10 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.loadPostsError = null
       break;
     case LOAD_POSTS_SUCCESS:
-      draft.mainPosts = action.data.concat(draft.mainPosts)
+      draft.mainPosts = draft.mainPosts.concat(action.data) 
       draft.loadPostsLoading = false
       draft.loadPostsDone = true
-      draft.hasMorePosts = draft.mainPosts.length < 50;
+      draft.hasMorePosts = action.data.length === 10;
       break;
     case LOAD_POSTS_FAILURE:
       draft.loadPostsLoading = false
@@ -150,6 +175,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.mainPosts.unshift(action.data)
       draft.addPostLoading = false
       draft.addPostDone = true
+      draft.imagePaths = [] // 이미지 등록 미리보기 초기화 
       break;
     case ADD_POST_FAILURE:
       draft.addPostLoading = false

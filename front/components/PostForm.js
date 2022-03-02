@@ -1,7 +1,7 @@
 import { useRef, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { addPost, UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE } from '../reducers/post'
+import { UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE, ADD_POST_REQUEST } from '../reducers/post'
 
 import { Form, Button, Input } from 'antd';
 import styled from 'styled-components';
@@ -25,14 +25,25 @@ const PostForm = () => {
     }
   }, [addPostDone])
 
+  const onSubmit = useCallback(() => {
+    if (!text || !text.trim()) {
+      return alert('게시글을 작성하세요.')
+    }
+    const formData = new FormData();
+    imagePaths.forEach((p) => {
+      formData.append('image', p);
+    })
+    formData.append('content', text);
+    return dispatch({
+      type: ADD_POST_REQUEST,
+      data: formData
+    })
+  }, [text, imagePaths])
+
   const imageInput = useRef()
   const onClickImageUpload = useCallback(() => {
     imageInput.current.click()
   }, [imageInput.current]) 
-
-  const onSubmit = useCallback(() => {
-    dispatch(addPost(text))
-  }, [text])
 
   const onChangeImages = useCallback((e) => {
     console.log('images', e.target.files);

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { all, fork, takeLatest, delay, put, throttle, call } from "redux-saga/effects";
+import { all, fork, takeLatest, put, throttle, call } from "redux-saga/effects";
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from "../reducers/user";
 import { 
   ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE, 
@@ -8,7 +8,8 @@ import {
   LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE, 
   LIKE_POST_REQUEST, LIKE_POST_SUCCESS, LIKE_POST_FAILURE,
   UNLIKE_POST_REQUEST,  UNLIKE_POST_SUCCESS, UNLIKE_POST_FAILURE,
-  UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS, UPLOAD_IMAGES_FAILURE
+  UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS, UPLOAD_IMAGES_FAILURE, 
+  RETWEET_REQUEST, RETWEET_SUCCESS, RETWEET_FAILURE
 } from "../reducers/post";
 
 
@@ -27,14 +28,14 @@ function* uploadImages(action) {
     console.log(err);
     yield put({
       type: UPLOAD_IMAGES_FAILURE,
-      data: err.response.data
+      error: err.response.data
     })
   }
 }
 
-
-function loadPostsAPI(data) {
-  return axios.get('/posts', data)
+// get방식으로 데이터를 받아올때는 api주소 뒤에 ?key=value 로 작성한다.
+function loadPostsAPI(lastId) {
+  return axios.get(`/posts?lastId=${lastId || 0}`) // 마지막아이디가 undefined인 경우는 0으로.
 }
 
 function* loadPosts(action) {
@@ -48,14 +49,14 @@ function* loadPosts(action) {
     console.log(err);
     yield put({
       type: LOAD_POSTS_FAILURE,
-      data: err.response.data
+      error: err.response.data
     })
   }
 }
 
 
 function addPostAPI(data) {
-  return axios.post('/post', { content: data })
+  return axios.post('/post', data)
 }
 
 function* addPost(action) {
@@ -73,7 +74,7 @@ function* addPost(action) {
     console.error(err);
     yield put({
       type: ADD_POST_FAILURE,
-      data: err.response.data
+      error: err.response.data
     })
   }
 }
@@ -98,10 +99,11 @@ function* removePost(action) {
     console.error(err);
     yield put({
       type: REMOVE_POST_FAILURE,
-      data: err.response.data
+      error: err.response.data
     })
   }
 }
+
 
 function addCommentAPI(data) {
   return axios.post(`/post/${data.postId}/comment`, data) 
@@ -118,10 +120,11 @@ function* addComment(action) {
     console.log(err);
     yield put({
       type: ADD_COMMENT_FAILURE,
-      data: err.response.data
+      error: err.response.data
     })
   }
 }
+
 
 function likePostAPI(data) {
   return axios.patch(`/post/${data}/like`) 
@@ -138,7 +141,7 @@ function* likePost(action) {
     console.log(err);
     yield put({
       type: LIKE_POST_FAILURE,
-      data: err.response.data
+      error: err.response.data
     })
   }
 }
@@ -159,7 +162,28 @@ function* unlikePost(action) {
     console.log(err);
     yield put({
       type: UNLIKE_POST_FAILURE,
-      data: err.response.data
+      error: err.response.data
+    })
+  }
+}
+
+
+function retweetAPI(data) {
+  return axios.post(`/post/${data}/retweet`) 
+}
+
+function* retweet(action) {
+  try {
+    const result = yield call(retweetAPI, action.data)
+    yield put({
+      type: RETWEET_SUCCESS,
+      data: result.data
+    })
+  } catch (err) {
+    console.log(err)
+    yield put({
+      type: RETWEET_FAILURE,
+      error: err.response.data
     })
   }
 }
@@ -193,8 +217,13 @@ function* watchAddComment() {
   yield takeLatest(ADD_COMMENT_REQUEST, addComment)
 }
 
+function* watchRetweet() {
+  yield takeLatest(RETWEET_REQUEST, retweet)
+}
+
 export default function* userSaga() {
   yield all([
+    fork(watchRetweet),
     fork(watchUploadImages),
     fork(watchlikePost),
     fork(watchUnlikePost),

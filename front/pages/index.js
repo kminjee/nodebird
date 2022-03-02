@@ -11,8 +11,13 @@ const Home = () => {
 
   const dispatch = useDispatch()
   const { me } = useSelector((state) => state.user)
-  const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector((state) => state.post)
+  const { mainPosts, hasMorePosts, loadPostsLoading, retweetError } = useSelector((state) => state.post)
 
+  useEffect(() => {
+    if (retweetError) {
+      alert(retweetError)
+    }
+  }, [retweetError])
 
   useEffect(() => {
     dispatch({
@@ -27,8 +32,10 @@ const Home = () => {
     function onScroll() {
       if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
         if (hasMorePosts && !loadPostsLoading) {
+          const lastId = mainPosts[mainPosts.length-1]?.id // 처음 로딩하면 mainPosts.0 -1이라 undefined가 되서 방지하기위해 ? 를 붙임.
           dispatch({
-            type: LOAD_POSTS_REQUEST
+            type: LOAD_POSTS_REQUEST,
+            lastId
           })
         }
       }
@@ -37,7 +44,7 @@ const Home = () => {
     return () => {
       window.removeEventListener('scroll', onScroll)
     }
-  }, [hasMorePosts, loadPostsLoading])
+  }, [hasMorePosts, loadPostsLoading, mainPosts])
 
   return (
     <Layout>
