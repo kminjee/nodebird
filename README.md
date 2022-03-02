@@ -39,6 +39,11 @@
 
 ## 미리보기
 
+### 이미지 업로드
+<img src="https://user-images.githubusercontent.com/86812090/156355672-be9ca648-993e-4a0e-abdc-ae0575e0dcad.gif" width="600"/>
+
+<br/>
+
 ### 이미지 상세보기
 <img src="https://user-images.githubusercontent.com/86812090/155520920-aed49d1d-acb6-48b6-b460-5b5492ff6830.gif" width="600" height="600"/>
 
