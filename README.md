@@ -89,8 +89,8 @@ useInput을 호출함과 동시에 props로 초기값을 전달하고 setter에 
 
 <br/>
 
-### shortId와 faker로 데이터 생성하기
-백엔드 구현 전에 미리 더미데이터를 활용해서 shortId로 새 id값을 생성하고 faker를 통해 랜덤으로 데이터를 만들어 미리 테스트를 해봤습니다.
+### 더미데이터에 shortId와 faker로 데이터 생성하기
+백엔드 구현 전에 미리 더미데이터를 활용해서 크게 구별되는 테이블은 대문자로 구별하여 객체를 만들고 연결된 테이블에도 객체 안에서 객체를 만들어 연결해주는 방식으로 진행하였고 shortId로 새 id값을 생성하고 faker를 통해 랜덤으로 데이터를 만들었습니다.
 
 <img src="https://user-images.githubusercontent.com/86812090/155551839-1809b3de-e41e-410d-acc9-2e2e3b7b83f1.jpg" width="450"/>
 
