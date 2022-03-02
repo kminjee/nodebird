@@ -7,8 +7,30 @@ import {
   REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, REMOVE_POST_FAILURE,
   LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE, 
   LIKE_POST_REQUEST, LIKE_POST_SUCCESS, LIKE_POST_FAILURE,
-  UNLIKE_POST_REQUEST,  UNLIKE_POST_SUCCESS, UNLIKE_POST_FAILURE
+  UNLIKE_POST_REQUEST,  UNLIKE_POST_SUCCESS, UNLIKE_POST_FAILURE,
+  UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS, UPLOAD_IMAGES_FAILURE
 } from "../reducers/post";
+
+
+function uploadImagesAPI(data) {
+  return axios.post('/post/images', data) // formdata는 { } 로 감싸면 안 된다. json 형태가 되버리기 때문 / 폼데이터는 그대로 전달해야한다.
+}
+
+function* uploadImages(action) {
+  try {
+    const result = yield call(uploadImagesAPI, action.data) // action.data = imageFormData
+    yield put({
+      type: UPLOAD_IMAGES_SUCCESS,
+      data: result.data
+    })
+  } catch (err) {
+    console.log(err);
+    yield put({
+      type: UPLOAD_IMAGES_FAILURE,
+      data: err.response.data
+    })
+  }
+}
 
 
 function loadPostsAPI(data) {
@@ -143,6 +165,10 @@ function* unlikePost(action) {
 }
 
 
+function* watchUploadImages() {
+  yield takeLatest(UPLOAD_IMAGES_REQUEST, uploadImages)
+}
+
 function* watchlikePost() {
   yield takeLatest(LIKE_POST_REQUEST, likePost)
 }
@@ -169,6 +195,7 @@ function* watchAddComment() {
 
 export default function* userSaga() {
   yield all([
+    fork(watchUploadImages),
     fork(watchlikePost),
     fork(watchUnlikePost),
     fork(watchLoadPosts),

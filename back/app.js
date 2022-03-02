@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const path = require('path');
 
 const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
@@ -25,6 +26,7 @@ app.use(cors({  // res.setHeader('Access-Control-Allow-Origin', 'http://localhos
   credentials: true
 }));
 
+app.use('/', express.static(path.join(__dirname, 'uploads'))) // express의 staic이라는 미들웨어
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
