@@ -1,6 +1,5 @@
 # React NodeBird SNS
 트위터 비슷한 SNS 만들기로 Zerocho님의 강의를 보고 만든 프로젝트입니다.<br/>
-서버사이드렌더링 구현 진행중입니다.
 
 <br/>
 
