@@ -20,7 +20,6 @@ const User = () => {
     (state) => state.post
   );
   const { userInfo } = useSelector((state) => state.user);
-  console.log(userInfo)
 
   useEffect(() => {
     const onScroll = () => {

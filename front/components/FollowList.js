@@ -23,7 +23,7 @@ const StyledCardMeta = styled(Card.Meta)`
   text-align: center;
 `
 
-const FollowList = ({ header, data }) => {
+const FollowList = ({ header, data, onClickMore, loading }) => {
 
   const dispatch = useDispatch()
   const onCancel = (id) => () => {
@@ -44,7 +44,7 @@ const FollowList = ({ header, data }) => {
       header={<div>{header}</div>}
       size="small"
       grid={{ gutter: 4, xs: 2, md: 3 }}
-      loadMore={<StyledDiv><Button>더보기</Button></StyledDiv>}
+      loadMore={<StyledDiv><Button onClick={onClickMore} loading={loading}>더보기</Button></StyledDiv>}
       bordered
       dataSource={data}
       renderItem={(item) => (
@@ -60,7 +60,9 @@ const FollowList = ({ header, data }) => {
 
 FollowList.propTypes = {
   header: PropTypes.string.isRequired,
-  data: PropTypes.array.isRequired
+  data: PropTypes.array.isRequired,
+  onClickMore: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired
 }
 
 export default FollowList;

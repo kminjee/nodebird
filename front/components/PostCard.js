@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from 'prop-types';
 import { Card, Popover, Button, Avatar, Comment, List } from "antd";
@@ -8,7 +8,10 @@ import CommentForm from './CommentForm';
 import PostCardContent from "./PostCardContent";
 import { LIKE_POST_REQUEST, REMOVE_POST_REQUEST, UNLIKE_POST_REQUEST, RETWEET_REQUEST } from '../reducers/post';
 import FollowButton from './FollowButton';
+import Link from 'next/link';
+import moment from 'moment';
 
+moment.locale('ko');  // 한글로 변환
 
 const PostCard = ({ post }) => {
 
@@ -100,19 +103,32 @@ const PostCard = ({ post }) => {
         {post.RetweetId && post.Retweet 
           ? (
             <Card cover={post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />}>
+              <div style={{ float: 'right '}}>{moment(post.createdAt).format('YYYY.MM.DD')}</div>
               <Card.Meta 
-                avatar={<Avatar>{post.Retweet.User.nickname[0]}</Avatar>}
+                avatar={(
+                  <Link href={`/user/${post.Retweet.User.id}`}>
+                    <a><Avatar>{post.Retweet.User.nickname[0]}</Avatar></a>
+                  </Link>
+                )}
                 title={post.Retweet.User.nickname}
-                description={<PostCardContent postData={post.Retweet.content} />}
+                description={<PostCardContent postData={post.Retweet.content} />
+                }
               />
             </Card>
             ) 
           : (
+            <>
+              <div style={{ float: 'right '}}>{moment(post.createdAt).format('YYYY.MM.DD')}</div>
               <Card.Meta 
-                avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
+              avatar={(
+                <Link href={`/user/${post.User.id}`}>
+                  <a><Avatar>{post.User.nickname[0]}</Avatar></a>
+                </Link>
+              )}
                 title={post.User.nickname}
                 description={<PostCardContent postData={post.content} />}
               />
+            </>
             )
         }
       </Card>
@@ -127,7 +143,11 @@ const PostCard = ({ post }) => {
               <li>
                 <Comment
                   author={item.User.nickname}
-                  avatar={<Avatar>{item.User.nickname[0]}</Avatar>}
+                  avatar={(
+                    <Link href={`/user/${item.User.id}`}>
+                      <a><Avatar>{item.User.nickname[0]}</Avatar></a>
+                    </Link>
+                  )}
                   content={item.content}
                 />
               </li>

@@ -42,13 +42,48 @@ router.get('/', async (req, res, next) => {
 });
 
 
+// GET /user/followers
+router.get('/followers', isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { id: req.user.id }})  // 나를 먼저 찾고
+    if (!user) {
+      res.status(403).send('존재하지 않는 사용자입니다.')
+    }
+    const followers = await user.getFollowers({
+      limit: parseInt(req.query.limit),
+    }) // 내 팔로워 가져오기
+    res.status(200).json(followers)
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+
+// GET /user/followings
+router.get('/followings', isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { id: req.user.id }})
+    if (!user) {
+      res.status(403).send('존재하지 않는 사용자입니다.')
+    }
+    const followings = await user.getFollowings({
+      limit: parseInt(req.query.limit)
+    })
+    res.status(200).json(followings)
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
 
 // 특정 사용자 데이터 불러오기 --------------------------------------------------------------------------------
 router.get('/:userId', async (req, res, next) => {
   console.log(req.headers)
   try {
       const fullUserWithoutPassword = await User.findOne({
-        where: { id: req.params.userId },
+        where: { id: req.params.id },
         attributes: {
           exclude: ['password']
         },  
@@ -70,7 +105,7 @@ router.get('/:userId', async (req, res, next) => {
       data.Posts = data.Posts.length; // 개인정보침해 예방
       data.Followers = data.Followers.length;
       data.Followings = data.Followings.length;
-      res. status(200).json(fullUserWithoutPassword);
+      res.status(200).json(fullUserWithoutPassword);
     } else {
       res.status(404).json('존재하지 않는 사용자입니다.');
     }
@@ -84,7 +119,7 @@ router.get('/:userId', async (req, res, next) => {
 // 특정 사용자 게시글 전체 불러오기 --------------------------------------------------------------------------------
 router.get('/:userId/posts', async (req, res, next) => {
   try {
-    const where = { UserId: req.params.id };
+    const where = { UserId: req.params.userId };
     if (parseInt(req.query.lastId, 10)) { 
       where.id = { [Op.lt]: parseInt(req.query.lastId, 10) } 
     }
@@ -117,7 +152,6 @@ router.get('/:userId/posts', async (req, res, next) => {
         }]
       }]
     });
-    console.log(posts);
     res.status(200).json(posts);
   } catch (err) {
     console.error(err);
@@ -126,9 +160,8 @@ router.get('/:userId/posts', async (req, res, next) => {
 });
 
 
-
-// isNotLoggedIn이 있으면 회원가입하지 않은 사람들만 이 경로로 가능
-router.post('/login', isNotLoggedIn, (req, res, next) => {
+// 로그인 --------------------------------------------------------------------------------------
+router.post('/login', isNotLoggedIn, (req, res, next) => { 
   passport.authenticate('local', (err, user, info) => {
     if (err) {  // 서버 에러가 생기면 에러 메시지 리턴
       console.log(err);
@@ -247,36 +280,6 @@ router.delete('/follower/:userId', isLoggedIn, async (req, res, next) => {
     }
     await user.removeFollowings(req.user.id)
     res.status(200).json({ UserId: parseInt(req.params.userId, 10) })
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-});
-
-// GET /user/followers
-router.get('/followers', isLoggedIn, async (req, res, next) => {
-  try {
-    const user = await User.findOne({ where: { id: req.user.id }})  // 나를 먼저 찾고
-    if (!user) {
-      res.status(403).send('존재하지 않는 사용자입니다.')
-    }
-    const followers = await user.getFollowers() // 내 팔로워 가져오기
-    res.status(200).json(followers)
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-});
-
-// GET /user/followings
-router.get('/followings', isLoggedIn, async (req, res, next) => {
-  try {
-    const user = await User.findOne({ where: { id: req.user.id }})
-    if (!user) {
-      res.status(403).send('존재하지 않는 사용자입니다.')
-    }
-    const followings = await user.getFollowings()
-    res.status(200).json(followings)
   } catch (err) {
     console.error(err);
     next(err);
