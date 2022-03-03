@@ -7,11 +7,12 @@ import wrapper from '../store/configureStore';
 const App = ({ Component }) => {
   return (
     <>
-      <Component />
       <Head>
         <meta charSet='utf-8' />
         <title>NodeBird</title>
+        <link rel="shortcut icon" href="/farvicon.ico" />
       </Head>
+      <Component />
     </>
   
   )

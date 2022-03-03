@@ -3,8 +3,12 @@ import produce from "immer";
 export const initialState = {
   mainPosts: [],
   imagePaths: [],
+  singlePost: null,
   hasMorePosts: true,
-  loadPostsLoading: false,
+  loadPostLoading: false,
+  loadPostDone: false,
+  loadPostError: null,
+  loadPostsLoading: false, // load_user_posts, load_hashtag_posts 공유
   loadPostsDone: false,
   loadPostsError: null,
   likePostLoading: false,
@@ -31,7 +35,22 @@ export const initialState = {
 }
 
 
+/* 특정 해시태그를 가진 글 목록 */
+export const LOAD_HASHTAG_POSTS_REQUEST = 'LOAD_HASHTAG_POSTS_REQUEST';
+export const LOAD_HASHTAG_POSTS_SUCCESS = 'LOAD_HASHTAG_POSTS_SUCCESS';
+export const LOAD_HASHTAG_POSTS_FAILURE = 'LOAD_HASHTAG_POSTS_FAILURE';
 
+/* 특정 유저의 글 목록 */
+export const LOAD_USER_POSTS_REQUEST = 'LOAD_USER_POSTS_REQUEST';
+export const LOAD_USER_POSTS_SUCCESS = 'LOAD_USER_POSTS_SUCCESS';
+export const LOAD_USER_POSTS_FAILURE = 'LOAD_USER_POSTS_FAILURE';
+
+/* 단일 게시글 */
+export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
+export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
+export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
+
+/* 다중 게시글 */
 export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
 export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
 export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
@@ -150,17 +169,38 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.unlikePostError = action.error
       break;
 
+    case LOAD_POST_REQUEST:
+      draft.loadPostLoading = true
+      draft.loadPostDone = false
+      draft.loadPostError = null
+      break;
+    case LOAD_POST_SUCCESS:
+      draft.singlePost = action.data
+      draft.loadPostLoading = false
+      draft.loadPostDone = true
+      break;
+    case LOAD_POST_FAILURE:
+      draft.loadPostLoading = false
+      draft.loadPostError = action.error
+      break;
+
+    case LOAD_USER_POSTS_REQUEST:
+    case LOAD_HASHTAG_POSTS_REQUEST:
     case LOAD_POSTS_REQUEST:
       draft.loadPostsLoading = true
       draft.loadPostsDone = false
       draft.loadPostsError = null
       break;
+    case LOAD_USER_POSTS_SUCCESS:
+    case LOAD_HASHTAG_POSTS_SUCCESS:
     case LOAD_POSTS_SUCCESS:
       draft.mainPosts = draft.mainPosts.concat(action.data) 
       draft.loadPostsLoading = false
       draft.loadPostsDone = true
       draft.hasMorePosts = action.data.length === 10;
       break;
+    case LOAD_USER_POSTS_FAILURE:
+    case LOAD_HASHTAG_POSTS_FAILURE:
     case LOAD_POSTS_FAILURE:
       draft.loadPostsLoading = false
       draft.loadPostsError = action.error

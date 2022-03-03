@@ -1,7 +1,10 @@
 import produce from 'immer';
 
 export const initialState = {
-  loadUserLoding: false,  // 유저 정보 가져오기 시도중
+  loadMyInfoLoding: false,  // 내 정보 가져오기 시도중
+  loadMyInfoDone: false,
+  loadMyInfoError: null,
+  loadUserLoding: false,  // 남의 유저 정보 가져오기 시도중
   loadUserDone: false,
   loadUserError: null,
   loginLoding: false,     // 로그인 시도중
@@ -32,9 +35,12 @@ export const initialState = {
   removeFollowerDone: false,
   removeFollowerError: null,
   me: null,
-  signupData: {},
-  loginData: {}
+  userInfo: null
 }
+
+export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
+export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
+export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
 
 export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
 export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
@@ -93,6 +99,22 @@ export const logoutRequestAction = () => ({
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
+    case LOAD_MY_INFO_REQUEST:
+      draft.loadMyInfoLoding = true
+      draft.loadMyInfoDone = false
+      draft.loadMyInfoError = null
+      break;
+    case LOAD_MY_INFO_SUCCESS:
+      draft.loadMyInfoLoding = false
+      draft.loadMyInfoDone = true
+      draft.me = action.data
+      break;
+    case LOAD_MY_INFO_FAILURE:
+      draft.loadMyInfoLoding = false
+      draft.loadMyInfoDone = false
+      draft.loadMyInfoError = action.error
+      break;
+
     case LOAD_USER_REQUEST:
       draft.loadUserLoding = true
       draft.loadUserDone = false
@@ -101,7 +123,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case LOAD_USER_SUCCESS:
       draft.loadUserLoding = false
       draft.loadUserDone = true
-      draft.me = action.data
+      draft.userInfo = action.data
       break;
     case LOAD_USER_FAILURE:
       draft.loadUserLoding = false

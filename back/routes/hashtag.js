@@ -1,23 +1,24 @@
 const express = require('express');
-const { Op } = require('sequelize');
-const { Post, User, Image, Comment } = require('../models');
-
 const router = express.Router();
+const { Op } = require('sequelize');
+const { Hashtag, Image, User, Post, Comment } = require('../models');
 
-router.get('/', async (req, res, next) => {
+
+/* 특정 해시태그 게시글 전체 불러오기 */
+router.get('/:hashtag', async (req, res, next) => {
   try {
-    const where = {}
-    if (parseInt(req.query.lastId, 10)) { // 초기 로딩이 아닐 때 실행
-      where.id = { [Op.lt]: parseInt(req.query.lastId, 10) } // 보다 작은
+    const where = { };
+    if (parseInt(req.query.lastId, 10)) { 
+      where.id = { [Op.lt]: parseInt(req.query.lastId, 10) } 
     }
     const posts = await Post.findAll({
       where,
       limit: 10,  // 10개만 가져옴
-      order: [
-        ['createdAt', 'DESC'],
-        [Comment, 'createdAt', 'DESC']
-      ],
+      order: [['createdAt', 'DESC']],
       include: [{
+        model: Hashtag,
+        where: { name: decodeURIComponent(req.params.hashtag) }
+      }, {
         model: User,
         attributes: ['id', 'nickname']
       }, {
@@ -26,10 +27,11 @@ router.get('/', async (req, res, next) => {
         model: Comment,
         include: [{
           model: User,
-          attributes: ['id', 'nickname']
+          attributes: ['id', 'nickname'],
+          order: [['createdAt', 'DESC']]
         }]
       }, {
-        model: User, // 좋아요 누른 사람
+        model: User,
         as: 'Likers',
         attributes: ['id']
       }, {

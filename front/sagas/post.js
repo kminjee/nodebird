@@ -6,10 +6,11 @@ import {
   ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE, 
   REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, REMOVE_POST_FAILURE,
   LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE, 
+  LOAD_POST_REQUEST, LOAD_POST_SUCCESS, LOAD_POST_FAILURE, 
   LIKE_POST_REQUEST, LIKE_POST_SUCCESS, LIKE_POST_FAILURE,
   UNLIKE_POST_REQUEST,  UNLIKE_POST_SUCCESS, UNLIKE_POST_FAILURE,
   UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS, UPLOAD_IMAGES_FAILURE, 
-  RETWEET_REQUEST, RETWEET_SUCCESS, RETWEET_FAILURE
+  RETWEET_REQUEST, RETWEET_SUCCESS, RETWEET_FAILURE, LOAD_USER_POSTS_REQUEST, LOAD_HASHTAG_POSTS_REQUEST, LOAD_HASHTAG_POSTS_FAILURE, LOAD_HASHTAG_POSTS_SUCCESS, LOAD_USER_POSTS_SUCCESS, LOAD_USER_POSTS_FAILURE, 
 } from "../reducers/post";
 
 
@@ -33,6 +34,74 @@ function* uploadImages(action) {
   }
 }
 
+
+/* 단일 게시글 */
+function loadPostAPI(data) {
+  return axios.get(`/post/${data}`)
+}
+
+function* loadPost(action) {
+  try {
+    const result = yield call(loadPostAPI, action.data)
+    yield put({
+      type: LOAD_POST_SUCCESS,
+      data: result.data
+    })
+  } catch (err) {
+    console.log(err);
+    yield put({
+      type: LOAD_POST_FAILURE,
+      error: err.response.data
+    })
+  }
+}
+
+
+/* 특정 유저 게시글 리스트 */
+function loadUserPostsAPI(data, lastId) {
+  return axios.get(`/user/${data}/posts?lastId=${lastId || 0}`)
+}
+
+function* loadUserPosts(action) {
+  try {
+    const result = yield call(loadUserPostsAPI, action.data, action.lastId)
+    yield put({
+      type: LOAD_USER_POSTS_SUCCESS,
+      data: result.data
+    })
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_USER_POSTS_FAILURE,
+      error: err.response.data
+    })
+  }
+}
+
+
+/* 특정 해시태그 게시글 리스트 */
+function loadHashtagPostsAPI(data, lastId) {
+  return axios.get(`/hashtag/${encodeURIComponent(data)}?lastId=${lastId || 0}`)
+}
+
+function* loadHashtagPosts(action) {
+  try {
+    console.log('loadHashtag console')
+    const result = yield call(loadHashtagPostsAPI, action.data, action.lastId)
+    yield put({
+      type: LOAD_HASHTAG_POSTS_SUCCESS,
+      data: result.data
+    })
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_HASHTAG_POSTS_FAILURE,
+      error: err.response.data
+    })
+  }
+}
+
+
 // get방식으로 데이터를 받아올때는 api주소 뒤에 ?key=value 로 작성한다.
 function loadPostsAPI(lastId) {
   return axios.get(`/posts?lastId=${lastId || 0}`) // 마지막아이디가 undefined인 경우는 0으로.
@@ -46,7 +115,7 @@ function* loadPosts(action) {
       data: result.data
     })
   } catch (err) {
-    console.log(err);
+    console.error(err);
     yield put({
       type: LOAD_POSTS_FAILURE,
       error: err.response.data
@@ -205,6 +274,14 @@ function* watchLoadPosts() {
   yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts)
 }
 
+function* watchLoadUserPosts() {
+  yield throttle(5000, LOAD_USER_POSTS_REQUEST, loadUserPosts)
+}
+
+function* watchLoadHashtagPosts() {
+  yield throttle(5000, LOAD_HASHTAG_POSTS_REQUEST, loadHashtagPosts)
+}
+
 function* watchAddPost() {
   yield takeLatest(ADD_POST_REQUEST, addPost)
 }
@@ -221,12 +298,19 @@ function* watchRetweet() {
   yield takeLatest(RETWEET_REQUEST, retweet)
 }
 
+function* watchLoadPost() {
+  yield takeLatest(LOAD_POST_REQUEST, loadPost)
+}
+
 export default function* userSaga() {
   yield all([
+    fork(watchLoadPost),
     fork(watchRetweet),
     fork(watchUploadImages),
     fork(watchlikePost),
     fork(watchUnlikePost),
+    fork(watchLoadUserPosts),
+    fork(watchLoadHashtagPosts),
     fork(watchLoadPosts),
     fork(watchAddPost),
     fork(watchRemovePost),

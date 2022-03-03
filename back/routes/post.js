@@ -87,6 +87,52 @@ router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => {
 })
 
 
+// 단일 게시글 ----------------------------------------------------------------------------------------------------
+router.get('/:postId', async (req, res, next) => { 
+  try {
+    const post = await Post.findOne({
+      where: { id: req.params.postId },
+    })
+    if (!post) {
+      return res.status(404).send('존재하지 않는 게시글입니다.')
+    }
+    const fullPost = await Post.findOne({
+      where: { id: post.id },
+      include: [{
+        model: Post,
+        as: 'Retweet',
+        include: [{
+          model: User,
+          attributes: ['id', 'nickname']
+        }, {
+          model: Image
+        }]
+      }, {
+        model: User,
+        attributes: ['id', 'nickname']
+      }, {
+        model: Image
+      }, {
+        model: Comment,
+        include: [{
+          model: User,
+          attributes: ['id', 'nickname'],
+          order: [['createdAt', 'DESC']]
+        }]
+      }, {
+        model: User,
+        as: 'Likers',
+        attributes: ['id']
+      }]
+    })
+    res.status(200).json(fullPost);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+})
+
+
 // 리트윗 --------------------------------------------------------------------------------------------------------
 router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => { // 동적으로 바뀌는 부분은 : 을 붙여준다.
   try {
@@ -151,7 +197,7 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => { // 동�
     console.error(err);
     next(err);
   }
-})
+});
 
 
 // 댓글 등록 ------------------------------------------------------------------------------------------------------

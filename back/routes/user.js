@@ -1,14 +1,16 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+const { Op } = require('sequelize');
 
-const { User, Post } = require('../models');
+const { User, Post, Image, Comment } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express.Router();
 
 
 router.get('/', async (req, res, next) => {
+  console.log(req.headers)
   try {
     if (req.user) {
       const fullUserWithoutPassword = await User.findOne({
@@ -37,8 +39,92 @@ router.get('/', async (req, res, next) => {
     console.error(err);
     next(err);
   }
+});
 
-})
+
+
+// 특정 사용자 데이터 불러오기 --------------------------------------------------------------------------------
+router.get('/:userId', async (req, res, next) => {
+  console.log(req.headers)
+  try {
+      const fullUserWithoutPassword = await User.findOne({
+        where: { id: req.params.userId },
+        attributes: {
+          exclude: ['password']
+        },  
+        include: [{
+          model: Post,
+          attributes: ['id']
+        }, {
+          model: User,
+          as: 'Followings',
+          attributes: ['id']
+        }, {
+          model: User,
+          as: 'Followers',
+          attributes: ['id']
+        }]
+      });
+    if (fullUserWithoutPassword) {
+      const data = fullUserWithoutPassword.toJSON(); // 시퀄라이즈에서 보내준 데이터는 json이 아니므로 json으로 형번환을 한번 거친다.
+      data.Posts = data.Posts.length; // 개인정보침해 예방
+      data.Followers = data.Followers.length;
+      data.Followings = data.Followings.length;
+      res. status(200).json(fullUserWithoutPassword);
+    } else {
+      res.status(404).json('존재하지 않는 사용자입니다.');
+    }
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+
+// 특정 사용자 게시글 전체 불러오기 --------------------------------------------------------------------------------
+router.get('/:userId/posts', async (req, res, next) => {
+  try {
+    const where = { UserId: req.params.id };
+    if (parseInt(req.query.lastId, 10)) { 
+      where.id = { [Op.lt]: parseInt(req.query.lastId, 10) } 
+    }
+    const posts = await Post.findAll({
+      where,
+      limit: 10,  // 10개만 가져옴
+      include: [{
+        model: User,
+        attributes: ['id', 'nickname']
+      }, {
+        model: Image
+      }, {
+        model: Comment,
+        include: [{
+          model: User,
+          attributes: ['id', 'nickname']
+        }]
+      }, {
+        model: User, // 좋아요 누른 사람
+        as: 'Likers',
+        attributes: ['id']
+      }, {
+        model: Post,
+        as: 'Retweet',
+        include: [{
+          model: User,
+          attributes: ['id', 'nickname'],
+        }, {
+          model: Image
+        }]
+      }]
+    });
+    console.log(posts);
+    res.status(200).json(posts);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
 
 
 // isNotLoggedIn이 있으면 회원가입하지 않은 사람들만 이 경로로 가능
