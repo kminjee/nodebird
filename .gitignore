@@ -1,6 +1,5 @@
-# front module
+
 .next
 node_modules
-
-# KEY
 .env
+react-nodebird.pem
