@@ -98,7 +98,7 @@ useInput을 호출함과 동시에 props로 초기값을 전달하고 setter에 
 
 ## 프로젝트를 통해 배운것
 
-### Front-end
+### 📑 Front-end 📑
 #### 🔸 SSG(Server Site Generation) & SSR(Server Side Rendering)
 * SSG는 정적 생성으로 빌드 시간에 맞춰 서버에서 컴포넌트를 미리 렌더링한다. 사용자는 페이지에 들어왔을 때 데이터가 업데이트 되지 않은 상태여도 UI를 미리 볼 수 있다. 페이지가 렌더링 될 때 서버에서 해당 컴포넌트를 렌더링 함으로써 사용자는 미리 HTML을 볼 수 있는데 만약 useEffect()로 데이터를 불러고오 있다면 데이터를 모두 받아오기 전까진 로딩화면을 먼저 보게끔 할 수 있다.
 
@@ -121,12 +121,14 @@ Element는 style을 적용할 때 {}로 감싸서 객체를 만들면 안 된다
 
 <br/>
 
-### Back-end
+### 📑 Back-end 📑
 #### 🔸 Node.js
 Node.js는 서버가 아니다. V8엔진을 사용한 자바스크립트 런타임이다. 노드를 통해 다양한 자바스크립트 앱을 실행할 수 있으며 서버를 실행하는 데 가장 많이 사용된다. Node에서 제공하는 HTTP모듈이 서버역할을 해주고 웹 서버에서 별도의 소프트웨어 없이 동작이 가능하다. 이 프로젝트에서는 clinent의 사가에서 axios로 API 주소를 통해 요청한 데이터를 받아 그에 대한 응답을 한다. 여러개의 데이터가 필요한 경우 한번 요청 보낸 것을 여러개의 데이터로 묶어서 보내거나 또는 요청을 여러번 보내서 각각 응답을 보낸다. 
 
 #### 🔸 Sequelize
 자바스크립트로 MySql 데이터베이스를 조작할 수 있으며 자바스크립트가 알아서 SQL로 바꿔준다. $ npm i sequelize sequelize-cli mysql2 은 Node.js와 MySql을 연결해주는 드라이버로 필수로 설치해야 한다. 시퀄라이즈에서는 테이블을 모델이라고 부르고 자바스크립트에서 모델명을 단수로 입력하면 DB에서 복수형태로 변환된다. 모델 간에 관계 설정을 위해 ( 1:1 / 1:n / n:m ) 잘 따져보고 연결을 하는데 그 때 두 모델 사이에 관계테이블이 하나 생성되는데 검색할 때 매우 편리하다.
+
+<img src="https://user-images.githubusercontent.com/86812090/156697091-8bb88f48-c050-4bb7-8ee5-c7308db59eef.png"  width="" />
 
 #### 🔸 Passport
 패스포트는 클라이언트가 서버에 요청할 자격이 있는지 인증할 때 사용하는 미들웨어다. 카카오/구글/페이스북 등 다양한 로그인들을 한번에 관리할 수 있다. passport에는 serializeUser와 deserializeUser메서드가 존재하는데 serializeUser에는 유저의 고유 id값을 저장하고 로그인 시 단 한번만 실행이 된다. 그 반대인 deserializeUser에는 페이지를 이동할 때마다 저장된 id값을 통해 유저 정보를 조회한다. 또 isAuthenticated를 제공하는데 isAuthenticated가 true일 땐 로그인 한 상태를 의미한다.
