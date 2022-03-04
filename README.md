@@ -38,67 +38,36 @@
 * 인피니트 스크롤링
 
 <br/>
-<!-- -------------------------------------------------------------------------------------------------------------------------------- -->
-
-## 프로젝트 진행사항 
-
-### Redux
-<img src="https://user-images.githubusercontent.com/86812090/156685865-86eb564b-c77a-4310-88ac-bdc546ab6e6d.jpg" width="500" />
-
-### Redux-saga 사용 / Redux-thunk
-컴포넌트에서 REQUEST를 디스패치하면 사가에서는 REQUEST가 호출됨에 따라 API를 호출하는 제너레이터 함수를 실행시켜 데이터를 요청하고, 서버에서 넘겨주는 데이터를 완전히 리턴할 때까지 기다리는 call이펙트를 사용해 값을 받아오면 SUCCESS를 디스패치하는 방식입니다. 
-
-<img src="https://user-images.githubusercontent.com/86812090/156191560-d3111feb-397f-4db3-98c3-b0fed91ffce2.jpg" width="400" />
-
-<br/>
-
-### 커스텀 훅을 사용하여 중복된 훅들을 함수 하나로 관리하기
-useInput을 호출함과 동시에 props로 초기값을 전달하고 setter에 onChange함수를 전달해서 useInput에 value값을 할당하고 반환했습니다.
-
-<img src="https://user-images.githubusercontent.com/86812090/156198113-38ef6a7f-262b-4734-8df5-3a3266e9abba.jpg" width="400"/> <img src="https://user-images.githubusercontent.com/86812090/156198109-adf8e43e-d12a-40fc-a5c2-d334500e506b.jpg" width="400"/>
-
-<br/>
-
-### Immer를 사용해 쉽게 불변성 관리 하기
-기존에는 ...state로 이전 상태값을 참조하여 불변성을 지키면서 새로운 상태로 만들어내야 했는데 그로 인해 길어지고 가독성 떨어졌는데, 알아서 불변성을 지켜주면서 다음 상태로 만들어준다는 immer를 통해 쉽게 관리하였습니다.
-
-<img src="https://user-images.githubusercontent.com/86812090/155526502-79f1e625-0266-4ad0-b4fb-5e9b1d2de054.jpg" width="450"/> <img src="https://user-images.githubusercontent.com/86812090/155525933-02f5899a-192e-4831-b076-9dacc91150ea.jpg" width="450"/>
-
-<br/>
-
-### 더미데이터에 shortId와 faker로 데이터 생성하기
-백엔드 구현 전에 미리 더미데이터를 활용해서 크게 구별되는 테이블은 대문자로 구별하여 객체를 만들고 연결된 테이블에도 객체 안에서 객체를 만들어 연결해주는 방식으로 진행하였고 안에 소문자는 테이블 컬럼을 뜻합니다. shortId로 새 id값을 생성하고 faker를 통해 랜덤으로 데이터를 만들었습니다.
-
-<img src="https://user-images.githubusercontent.com/86812090/155551839-1809b3de-e41e-410d-acc9-2e2e3b7b83f1.jpg" width="450"/>
-
-<br/>
-
-### Node
-
-<!-- -------------------------------------------------------------------------------------------------------------------------------- -->
-
-## 미리보기
-
-### 이미지 상세보기
-<img src="https://user-images.githubusercontent.com/86812090/155520920-aed49d1d-acb6-48b6-b460-5b5492ff6830.gif" width="600" height="600"/>
-
-<br/>
-
-### 인피니트 스크롤링
-<img src="https://user-images.githubusercontent.com/86812090/155521122-e194cf1e-2151-422d-9493-4f8e06423248.gif" width="600" height="600"/>
-
-<br/>
-
-### 팔로우/언팔로우
-<img src="https://user-images.githubusercontent.com/86812090/156192994-e79b2597-ad3a-49ed-b5cc-05f3ce19353b.gif" width="600"/>
-
-<br/>
 
 <!-- -------------------------------------------------------------------------------------------------------------------------------- -->
 
 ## 프로젝트를 통해 배운것
 
 ### 📑 Front-end 📑
+#### 🔸 Redux
+<img src="https://user-images.githubusercontent.com/86812090/156685865-86eb564b-c77a-4310-88ac-bdc546ab6e6d.jpg" width="500" />
+
+#### 🔸 Redux-saga 사용 / Redux-thunk
+컴포넌트에서 REQUEST를 디스패치하면 사가에서는 REQUEST가 호출됨에 따라 API를 호출하는 제너레이터 함수를 실행시켜 데이터를 요청하고, 서버에서 넘겨주는 데이터를 완전히 리턴할 때까지 기다리는 call이펙트를 사용해 값을 받아오면 SUCCESS를 디스패치하는 방식입니다. 
+
+<img src="https://user-images.githubusercontent.com/86812090/156191560-d3111feb-397f-4db3-98c3-b0fed91ffce2.jpg" width="400" />
+
+#### 🔸 커스텀 훅을 사용하여 중복된 훅들을 함수 하나로 관리하기
+<img src="https://user-images.githubusercontent.com/86812090/156198113-38ef6a7f-262b-4734-8df5-3a3266e9abba.jpg" width="400"/> <img src="https://user-images.githubusercontent.com/86812090/156198109-adf8e43e-d12a-40fc-a5c2-d334500e506b.jpg" width="400"/>
+
+useInput을 호출함과 동시에 props로 초기값을 전달하고 setter에 onChange함수를 전달해서 useInput에 value값을 할당하고 반환했습니다.
+
+
+#### 🔸 Immer를 사용해 쉽게 불변성 관리 하기
+기존에는 ...state로 이전 상태값을 참조하여 불변성을 지키면서 새로운 상태로 만들어내야 했는데 그로 인해 길어지고 가독성 떨어졌는데, 알아서 불변성을 지켜주면서 다음 상태로 만들어준다는 immer를 통해 쉽게 관리하였습니다.
+
+<img src="https://user-images.githubusercontent.com/86812090/155526502-79f1e625-0266-4ad0-b4fb-5e9b1d2de054.jpg" width="450"/> <img src="https://user-images.githubusercontent.com/86812090/155525933-02f5899a-192e-4831-b076-9dacc91150ea.jpg" width="450"/>
+
+#### 🔸 더미데이터에 shortId와 faker로 데이터 생성하기
+백엔드 구현 전에 미리 더미데이터를 활용해서 크게 구별되는 테이블은 대문자로 구별하여 객체를 만들고 연결된 테이블에도 객체 안에서 객체를 만들어 연결해주는 방식으로 진행하였고 안에 소문자는 테이블 컬럼을 뜻합니다. shortId로 새 id값을 생성하고 faker를 통해 랜덤으로 데이터를 만들었습니다.
+
+<img src="https://user-images.githubusercontent.com/86812090/155551839-1809b3de-e41e-410d-acc9-2e2e3b7b83f1.jpg" width="450"/>
+
 #### 🔸 SSG(Server Site Generation) & SSR(Server Side Rendering)
 * SSG는 정적 생성으로 빌드 시간에 맞춰 서버에서 컴포넌트를 미리 렌더링한다. 사용자는 페이지에 들어왔을 때 데이터가 업데이트 되지 않은 상태여도 UI를 미리 볼 수 있다. 페이지가 렌더링 될 때 서버에서 해당 컴포넌트를 렌더링 함으로써 사용자는 미리 HTML을 볼 수 있는데 만약 useEffect()로 데이터를 불러고오 있다면 데이터를 모두 받아오기 전까진 로딩화면을 먼저 보게끔 할 수 있다.
 
@@ -146,3 +115,20 @@ Credentials는 쿠키를 공유할 때 사용한다. 도메인/서버가 다르�
 REST는 CRUD를 수행하기 위해 URI로 메소드와 함께 요청을 보내고 응답하는 네트워크 상의 클라이언트와 서버 사이의 통신 방식 중 하나다. REST API는 운영체제나 프로그래밍 언어가 제공하는 기능을 제어할 수 있게 만든 인터페이스이고 REST의 특징을 기반으로한 API다. 각 요청이 어떤 동작이나 정보를 위한 것인지를 요청한 모습 자체로도 해석이 가능하다는 특징이 있다. RESTful API는 REST의 설계 규칙을 잘 지킨 API이다. 
 
 <br/>
+
+<!-- -------------------------------------------------------------------------------------------------------------------------------- -->
+
+## 미리보기
+
+### 이미지 상세보기
+<img src="https://user-images.githubusercontent.com/86812090/155520920-aed49d1d-acb6-48b6-b460-5b5492ff6830.gif" width="600" height="600"/>
+
+<br/>
+
+### 인피니트 스크롤링
+<img src="https://user-images.githubusercontent.com/86812090/155521122-e194cf1e-2151-422d-9493-4f8e06423248.gif" width="600" height="600"/>
+
+<br/>
+
+### 팔로우/언팔로우
+<img src="https://user-images.githubusercontent.com/86812090/156192994-e79b2597-ad3a-49ed-b5cc-05f3ce19353b.gif" width="600"/>
