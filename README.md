@@ -11,15 +11,22 @@
 <!-- -------------------------------------------------------------------------------------------------------------------------------- -->
 
 ## 사용기술
+`front`
 * React
 * Next.js
 * Redux & Redux-saga
 * immer
 * Faker / Shortid
+* Moment.js
 * Styled Components
 * Ant Design
+
+`back`
 * Node.js
-* Sequelize
+* Sequelize - MYSQL
+* Passport
+* Bcrypt
+
 
 <br/>
 
