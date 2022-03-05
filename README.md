@@ -4,7 +4,7 @@
 </div>
 <br/>
 
-트위터 비슷한 SNS 만들기로 Zerocho님의 강의를 보고 만든 프로젝트입니다. React를 기반으로한 웹 어플리케이션으로 NextJs 프레임워크로 SSR을 구현해보고 Redux-saga 미들웨어로 비동기처리를 하였습니다.
+트위터 비슷한 SNS 만들기로 Zerocho님의 강의를 보고 만든 프로젝트입니다. React를 기반으로한 웹 어플리케이션으로 Next.js 프레임워크로 SSR을 구현해보고 Redux-saga 미들웨어로 비동기처리를 하였습니다.
 
 <br/>
 
